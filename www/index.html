@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+  <title>Application android</title>
+
+
+  <script src="lib/onsen/js/onsenui.js"></script>
+  <link rel="stylesheet" href="lib/onsen/css/onsenui.css">
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css">
+  <script type="" src="dexie.min.js"></script>
+  <script type="" src="app.js"></script>
+  <script type="" src="app_1.js"></script>
+
+  <link rel="stylesheet" href="bootstrap.min.css">   
+
+</head>
+
+<body>
+
+
+
+  <ons-navigator id="appNavigator" swipeable swipe-target-width="80px">
+    <ons-page>
+      <ons-splitter id="appSplitter">
+        <ons-splitter-side id="sidemenu" page="" swipeable side="left" collapse="" width="260px"></ons-splitter-side>
+        <ons-splitter-content page="accueil.html"></ons-splitter-content>
+      </ons-splitter>
+    </ons-page>
+  </ons-navigator>
+
+
+
+
+
+  <style>
+ @font-face {
+   font-family: "montsserat";
+   src: url(Montserrat-Light.otf);
+ }
+
+*{
+    font-family: 'montsserat', sans-serif;
+}
+  </style>
+
+
+
+
+  
+  <!--   Partie loading  -->
+
+  <ons-modal direction="up">
+    <div style="text-align: center">
+      <p>
+        <ons-icon icon="md-spinner" size="28px" spin></ons-icon>     </p>
+    </div>
+  </ons-modal>
+
+
+
+
+
+  
+  <template id="accueil.html">
+    <ons-page onload="onLoad()">
+     
+
+      <div style="width: 100%;height: 100%;top: 0px;padding-top: 10%;">
+        <div style="">
+          <center>
+            <img src="img_1.jpg" alt="" width="100%" height="400px">
+          </center>
+        </div>
+
+        <p style="font-size: 22px;font-weight: bold;margin-top: -20px;text-align: center;color: #404AAB;">MyCustomer</p>
+        <p style="text-align: center;font-size: 15px;margin-top: -10px;color: #404AAB;">Gérer vos clients autrement</p>
+       <center>
+        <button class="button" onclick="accueil() " style="width: 50%;border-radius: 20px;">Allez-y</button>
+       </center>
+       
+       
+
+      </div>
+
+
+      <style type="">
+       
+
+ </style>
+
+ <script>
+   function accueil() {
+     ouvrire('index.html');
+   }
+ </script>
+
+
+    </ons-page>
+  </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <template id="index.html">
+    <ons-page onload="onLoad()">
+     
+      <div style="width: 100%;height: 200px;background-color: #404AAB;padding-top: 50px;">
+<p style="font-size: 23px;color: white;margin-left: 20px;">Produit</p> 
+
+<p style="color: white;font-size: 17px;margin-top: -10px;margin-left: 20px;">Vos produits disponibles</p>
+      </div>
+
+      <div style="padding-top: 15px; width: 100%;height: 50px;background-color: #E6E7E6;margin-top: -20px;border-top-left-radius:20px ;border-top-right-radius:20px ;">
+         <p style="text-align: center;">Liste de vos produits</p>
+
+      </div>
+
+
+
+
+
+
+      <!-- floating bitton -->
+
+      <ons-fab position="bottom right" id="bouF1" onclick="form_ajouter() " style="background-color: #404AAB;">
+        <ons-icon icon="md-plus" ></ons-icon>
+      </ons-fab>
+
+
+      <!-- ***************************************liste des voitures********* -->
+
+
+
+
+      
+        
+      <ul class="list" id="les_produit">
+
+    
+      
+      
+      </ul>
+
+
+          <p id="info" style="top: 10px;"></p>
+
+          <input type="hidden" id="cache_id"> 
+          
+          
+          <template id="action-sheet1.html">
+            <ons-action-sheet id="sheet" cancelable >
+              <ons-action-sheet-button icon="md-edit" onclick="modifier_1()">Editer</ons-action-sheet-button>
+              <ons-action-sheet-button icon="md-delete" onclick="supprimer_1()" modifier="destructive">Supprimer</ons-action-sheet-button>
+              <ons-action-sheet-button icon="md-close" onclick="app.hideFromTemplate1()">Fermer</ons-action-sheet-button>
+            </ons-action-sheet>
+          </template>
+
+
+
+
+
+      <style type="">
+        ons-list-item{
+   height: 70px;
+  }
+   #toolbar1,#bouF1{
+   background-color: #01353F;
+
+   }
+ </style>
+
+ <script>
+   function form_ajouter() {
+     ouvrire('formulaire_1.html');
+   }
+
+   function affichage(){
+
+var  db=CreerBase();
+
+db.produit.toCollection().count(function(count){
+  if (count==0){
+    document.getElementById("info").innerHTML="Vous n'avez pas de produit";
+    document.getElementById("info").style.textAlign="center";
+    document.getElementById("info").style.marginTop="20px";
+  } 
+  else if (count>0){
+    var  db=CreerBase();
+    var compteur=0;
+    db.produit.reverse().each(function (argument) {
+      compteur++;
+         var id="div"+compteur;
+  
+      var info_1=" <li class=\"list-item\" id=\""+id+"\" ><div class=\"list-item__left\"><img class=\"list-item__thumbnail\" src=\""+argument.image+"\"> </div> ";
+      var info_2=" <div class=\"list-item__center\"  onclick=\"afficher_client('"+argument.id+"','"+id+"' )  \"><div class=\"list-item__title\">"+argument.nom+"</div> <div class=\"list-item__subtitle\">Stock :"+argument.stock+"</div></div>  ";
+      var info_3="  <div class=\"list-item__right\" onclick=\"menui1("+argument.id+") \"> <ons-icon icon=\"ion-ios-more,material:ion-android-more-vertical\"></ons-icon> </div></li>  ";
+
+      document.getElementById("les_produit").innerHTML+=info_1+info_2+info_3;
+});
+  }
+});
+}
+
+affichage();
+
+
+
+
+
+
+var app = {};
+
+ 
+
+
+
+function menui1(valeur) {
+  document.getElementById('cache_id').value=valeur;
+  ons.createElement('action-sheet1.html', { append: true })
+    .then(function (sheet) {
+      app.showFromTemplate1 = sheet.show.bind(sheet);
+      app.hideFromTemplate1 = sheet.hide.bind(sheet);
+
+      return app.showFromTemplate1() ;
+    });
+   
+   }
+
+
+
+
+ </script>
+
+    </ons-page >
+  </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <template id="les_clients.html">
+    <ons-page onload="onLoad()">
+
+  
+      <div style="width: 100%;height: 200px;background-color: #404AAB;padding-top: 50px;">
+        <center>
+      
+          <img src="user_male_circle_filled_50px.png" alt="" height="70px" style="">
+
+     </center>
+
+      <div class="center" style="text-align: center;color:white;font-size:15px;" id="nbr_client"></div>
+      <div class="center" style="text-align: center;color:white;font-size:12px;" id="prix_total"></div>
+
+        
+      </div>
+        
+              <div style="padding-top: 15px; width: 100%;height: 50px;background-color: #E6E7E6;margin-top: -20px;border-top-left-radius:20px ;border-top-right-radius:20px ;">
+                 <p style="text-align: center;">Liste de vos clients</p>
+        
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+      <!-- floating bitton -->
+
+      <ons-fab position="bottom right" id="bouF1" onclick="form_ajouter_2() " style="background-color: #404AAB;" >
+        <ons-icon icon="md-plus" ></ons-icon>
+      </ons-fab>
+
+
+      <!-- ***************************************liste des voitures********* -->
+
+
+
+
+      <ul class="list" id="client_prod">
+
+
+      </ul>
+
+
+
+      
+
+          <p id="info_client" style="text-align: center;margin-top: 10px;"></p>
+
+          
+          <input type="hidden" id="cache_produit">
+
+
+
+
+
+      <style type="">
+            #form_cont1{
+        width: 100%;
+        height: 130px;
+        background-color: #01353F;
+      }
+
+        ons-list-item{
+   height: 70px;
+  }
+   #toolbar1,#bouF1{
+   background-color: #01353F;
+
+   }
+ </style>
+
+ <script>
+   function form_ajouter_2() {
+     ouvrire('formulaire_2.html');
+   }
+ </script>
+
+
+    </ons-page>
+  </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- *******************page de formulaire d'ajout************** -->
+
+
+
+
+
+  <template id="formulaire_1.html">
+    <ons-page id="mecano">
+   
+      
+
+      <div id="form_cont1">
+
+          
+              <center>
+          
+                  <img src="shop.png" alt="" height="70px" style="">
+    
+             </center>
+
+              <div class="center" style="text-align: center;color:white;font-size:20px;">Ajouter un produit</div>
+              
+              
+
+      </div>
+
+    
+     
+
+      <div id="form_cont2" style="padding-right: 10px;">
+        
+       <br>
+       <ul class="list list--material">
+      
+          <li class="list-item list-item--material">
+            <div class="form-group list-item__subtitle list-item--material__subtitle">
+             
+                <input type="text" name="titre" class="form-control" id="nom" placeholder="Nom du produit" style="color: #404AAB;" >
+              </div>
+          </li>
+
+
+
+
+
+          <li class="list-item list-item--material">
+            <div class="form-group list-item__subtitle list-item--material__subtitle">
+ 
+                  <select class="form-control"  id="stock">
+                    <option value="">Sélectionnez le stock</option>
+                    <option >Limité</option>
+                    <option>Disponible</option>
+                </select>
+            </div>
+          </li>
+
+
+
+
+
+                <li class="list-item list-item--material" id="">
+                  <div class="custom-file">
+                    <label class="custom-file-label">L'image du produit</label>
+                    <input type="file"   class="custom-file-input" id="image" accept="image/*">
+                   
+                  </div>
+                  </li>
+
+                  <br>
+
+
+              
+             
+
+
+                     <center>  
+                        <ons-button class="button--large " onclick="ajout_produit() " style="width: 95%;margin-left: 10px;  background-color: #404AAB;">AJOUTER</ons-button>
+
+                      </center>
+                  </ul>
+      </div>
+
+
+
+
+      <style>
+      
+      #form_cont1{
+        padding-top: 50px;;
+        width: 100%;
+        height: 200px;
+        background-color: #404AAB;
+      }
+
+   
+
+</style>
+
+
+
+<script> 
+  </script>
+     
+
+    </ons-page>
+  </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <!-- *******************page de formulaire d'ajout************** -->
+
+
+
+
+
+  <template id="formulaire_2.html">
+    <ons-page id="mecano">
+      <div id="form_cont1">
+
+          
+        <center>
+    
+            <img src="user_male_circle_filled_50px.png" alt="" height="70px" style="">
+
+       </center>
+
+        <div class="center" style="text-align: center;color:white;font-size:20px;">Ajouter un client
+        </div>
+        
+        
+
+</div>
+
+    
+     
+
+      <div id="form_cont2" style="padding-right: 10px;">
+        
+       <br>
+       <ul class="list list--material">
+      
+          <li class="list-item list-item--material">
+            <div class="form-group list-item__subtitle list-item--material__subtitle">
+              
+                <input type="text" name="titre" class="form-control" id="nom_client" placeholder="Nom & Prénom" >
+              </div>
+          </li>
+
+          
+              
+          <li class="list-item list-item--material">
+              <div class="form-group list-item__subtitle list-item--material__subtitle">
+                 
+                  <input type="number" name="titre" class="form-control" id="prix_client" placeholder="Prix du produit" >
+              
+                 
+                </div>
+              </li>
+
+              <li class="list-item list-item--material">
+                <div class="form-group list-item__subtitle list-item--material__subtitle">
+                   
+                    <input type="number" name="titre" class="form-control" id="quantite_client" placeholder="Quantité du produit" >
+                
+                   
+                  </div>
+                </li>
+             
+
+             
+
+                <li class="list-item list-item--material">
+                <div class="form-group list-item__subtitle list-item--material__subtitle">
+                   
+                    <input type="text" name="titre" class="form-control" id="couleur" placeholder="Couleur du produit" >
+                  </div>
+                </li>
+
+
+
+                  <li class="list-item list-item--material">
+                  <div class="form-group list-item__subtitle list-item--material__subtitle">
+                      
+                      <input type="number" name="titre" class="form-control" id="numero" placeholder="Numéro de téléphone" >
+                    </div>
+                  </li>
+<!--   
+                    <li class="list-item list-item--material">
+                  <div class="form-group list-item__subtitle list-item--material__subtitle">
+                      
+                      <textarea class="form-control" name="poeme" id="maladie" placeholder="Maladie du patient" ></textarea>
+                     
+                    </div>
+                  </li>      -->
+
+               
+
+                  
+                        <ons-button class="button--large " onclick="ajout_client() " style="width: 95%;margin-left: 10px;  background-color: #404AAB;">AJOUTER</ons-button>
+
+                    
+                  </ul>
+      </div>
+
+
+<script>
+
+</script>
+
+
+      <style>
+      
+      #form_cont1{
+        padding-top: 50px;;
+        width: 100%;
+        height: 200px;
+        background-color: #404AAB;
+      }
+      </style>
+
+    </ons-page>
+  </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+  <template id="detail.html">
+      <ons-page id="mecano">
+          <ons-toolbar style="background-color: #404AAB;box-shadow: 0px 0px 0px 0px;">
+              <div class="left">
+                <ons-back-button></ons-back-button>
+              </div>
+              <div class="center" style="font-size: 20px;color:white;">
+                  Détail
+                </div>
+
+                <div class="right" style="font-size: 20px;color:white;margin-right:20px;">
+                  <ons-icon onclick="menu2()" style="color: white" size="30px" icon="ion-ios-more,material:ion-android-more-vertical"></ons-icon>
+                </div>
+            </ons-toolbar>
+            <!--  style-->
+        
+            <style>
+        
+              #form_cont3{
+                width: 100%;
+                height: 150px;
+                background-color: #404AAB;
+              }
+              </style>
+  
+        <div id="form_cont3">
+  
+            <br>
+                <center>
+            
+                    <img src="user_male_circle_filled_50px.png" alt="" height="70px" style="">
+      
+               </center>
+  
+                <div class="center" style="text-align: center;color:white;font-size:17px;" id="nomçprenom_d">Les informations sur le client</div>
+                
+                
+  
+        </div>
+  
+      
+  
+  
+        <div id="form_cont2" style="">
+           
+
+          <ul class="list list--material">
+            <li class="list-item list-item--material">
+              <div class="list-item__center list-item--material__center">
+                <div class="list-item__title list-item--material__title">Nom et Prénom</div>
+                <div class="list-item__subtitle list-item--material__subtitle" id="nom_d"></div>
+              </div>
+            </li>
+
+            <li class="list-item list-item--material">
+              <div class="list-item__center list-item--material__center">
+                <div class="list-item__title list-item--material__title">Prix</div>
+                <div class="list-item__subtitle list-item--material__subtitle" id="prix_d"></div>
+              </div>
+            </li>
+
+            <li class="list-item list-item--material">
+              <div class="list-item__center list-item--material__center">
+                <div class="list-item__title list-item--material__title">Quantité </div>
+                <div class="list-item__subtitle list-item--material__subtitle" id="quantite_d"></div>
+              </div>
+            </li>
+
+
+            <li class="list-item list-item--material">
+              <div class="list-item__center list-item--material__center">
+                <div class="list-item__title list-item--material__title">Date de commande</div>
+                <div class="list-item__subtitle list-item--material__subtitle" id="date_d"></div>
+              </div>
+            </li>
+
+            <li class="list-item list-item--material">
+              <div class="list-item__center list-item--material__center">
+                <div class="list-item__title list-item--material__title">Heure de la commande</div>
+                <div class="list-item__subtitle list-item--material__subtitle" id="heure_d"></div>
+              </div>
+            </li>
+
+            <li class="list-item list-item--material">
+              <div class="list-item__center list-item--material__center">
+                <div class="list-item__title list-item--material__title">Couleur du produit</div>
+                <div class="list-item__subtitle list-item--material__subtitle" id="couleur_d"></div>
+              </div>
+            </li>
+
+            <li class="list-item list-item--material">
+              <div class="list-item__center list-item--material__center">
+                <div class="list-item__title list-item--material__title">Numéro  du client</div>
+                <div class="list-item__subtitle list-item--material__subtitle" id="numero_d"></div> 
+              </div>
+            </li>
+
+          </ul>
+
+
+
+        </div>
+
+        <input type="hidden" id="input_copy">
+<input type="hidden" id="cache_d">
+
+
+
+        <template id="action-sheet.html">
+            <ons-action-sheet id="sheet" cancelable >
+              <ons-action-sheet-button icon="md-edit" onclick="modifier_client()">Editer</ons-action-sheet-button>
+              <ons-action-sheet-button icon="md-delete" onclick="supprimer_2()" modifier="destructive">Supprimer</ons-action-sheet-button>
+              <ons-action-sheet-button icon="md-close" onclick="app.hideFromTemplate()">Fermer</ons-action-sheet-button>
+            </ons-action-sheet>
+          </template>
+  
+  
+
+          <style>
+            .list-item--material__subtitle{
+              color: #404AAB;
+              font-size: 17px;
+            }
+          </style>
+  <script>
+  
+
+
+
+var app = {};
+
+function menu2(){
+  ons.ready(function () {
+  ons.createElement('action-sheet.html', { append: true })
+    .then(function (sheet) {
+      app.showFromTemplate = sheet.show.bind(sheet);
+      app.hideFromTemplate = sheet.hide.bind(sheet);
+      return app.showFromTemplate() ;
+    });
+});
+}
+
+
+  </script>
+  
+  
+     
+  
+      </ons-page>
+    </template>
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+  <!-- *******************presencd**************************************** -->
+
+
+
+
+
+  <template id="modifier_1.html">
+      <ons-page id="mecano">
+        <ons-toolbar id="toolbar1" style="background-color: #404AAB">
+            <div class="left">
+                <ons-back-button></ons-back-button>
+              </div>
+          <div class="center" id="" style="font-size: 20px;color:white;">Modifier information</div>
+  
+        </ons-toolbar>
+  
+  
+  
+  
+  
+        <div id="form_cont2" style="padding-right: 10px;">
+        
+            <br>
+            <li class="list-item list-item--material">
+              <div class="form-group list-item__subtitle list-item--material__subtitle">
+                <label for="">Nom du produit</label>
+                  <input type="text" name="titre" class="form-control" id="nom_m" placeholder="" >
+                </div>
+            </li>
+  
+  
+  
+  
+  
+            <li class="list-item list-item--material">
+              <div class="form-group list-item__subtitle list-item--material__subtitle">
+                  <label for="">Stock</label>
+                  <select class="form-control"  id="stock_m">
+                    <option id="init_m"></option>
+                      <option>Limité</option>
+                      <option>Disponible</option>
+                    </select> 
+              </div>
+            </li>
+  
+  
+  
+  
+  
+                  <li class="list-item list-item--material" id="">
+                    <div class="custom-file">
+                      <label class="custom-file-label">L'image du produit</label>
+                      <input type="file"   class="custom-file-input" id="image_m" >
+                     
+                    </div>
+                    </li>
+  
+                    <br>
+  
+  
+                
+               
+  
+  
+                       <li class="list-item list-item--material ">
+                       <div class="list-item__subtitle list-item--material__subtitle">
+                          <ons-button class="button--large " onclick="modifier_produit() " style="width: 97%; margin: 0 auto; background-color: #404AAB;">MODIFIER</ons-button>
+  
+                       </div>
+                      </li>
+                       </ul>
+           </div>
+  
+  
+           <input type="hidden" name="titre" class="form-control" id="id_base" placeholder="" >
+  
+  
+           <style>
+             label{
+               color: #404AAB;
+             }
+           </style>
+      </ons-page>
+    </template>
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <!-- *******************payement**************************************** -->
+
+
+
+
+  
+  <!-- *******************page de formulaire d'ajout************** -->
+
+
+
+
+
+  <template id="modifier_2.html">
+    <ons-page id="mecano">
+        <ons-toolbar style="background-color: #404AAB;box-shadow: 0px 0px 0px 0px;">
+            <div class="left">
+              <ons-back-button></ons-back-button>
+            </div>
+            <div class="center" style="font-size: 20px;color:white;">
+                Modier les informations
+              </div>
+          </ons-toolbar>
+      
+
+ 
+          
+     
+
+      <div id="form_cont2" style="padding-right: 10px;">
+        
+       <br>
+       <ul class="list list--material">
+      
+          <li class="list-item list-item--material">
+            <div class="form-group list-item__subtitle list-item--material__subtitle">
+              <label for="">Nom & Prénom</label>
+                <input type="text" name="titre" class="form-control" id="nom_client_m" placeholder="Nom & Prénom" >
+              </div>
+          </li>
+
+          
+              
+          <li class="list-item list-item--material">
+              <div class="form-group list-item__subtitle list-item--material__subtitle">
+                 <label for="">Prix</label>
+                  <input type="number" name="titre" class="form-control" id="prix_client_m" placeholder="Prix du produit" >
+                </div>
+              </li>
+
+              <li class="list-item list-item--material">
+                <div class="form-group list-item__subtitle list-item--material__subtitle">
+                   <label for="">Quantité du produit</label>
+                    <input type="number" name="titre" class="form-control" id="quantite_client_m" placeholder="" >
+                  </div>
+                </li>
+             
+
+             
+
+                <li class="list-item list-item--material">
+                <div class="form-group list-item__subtitle list-item--material__subtitle">
+                   <label for="">Couleur</label>
+                    <input type="text" name="titre" class="form-control" id="couleur_m" placeholder="Couleur du produit" >
+                  </div>
+                </li>
+
+
+
+                  <li class="list-item list-item--material">
+                  <div class="form-group list-item__subtitle list-item--material__subtitle">
+                      <label for="">Numéro de téléphone</label>
+                      <input type="number" name="titre" class="form-control" id="numero_m" placeholder="Numéro de telephone" >
+                    </div>
+                  </li>
+<!--   
+                    <li class="list-item list-item--material">
+                  <div class="form-group list-item__subtitle list-item--material__subtitle">
+                      
+                      <textarea class="form-control" name="poeme" id="maladie" placeholder="Maladie du patient" ></textarea>
+                     
+                    </div>
+                  </li>      -->
+
+               
+
+                     <li class="list-item list-item--material ">
+                     <div class="list-item__subtitle list-item--material__subtitle">
+                        <ons-button class="button--large " onclick="modifier_client_m() " style="width: 97%; margin: 0 auto; background-color: #404AAB;">MODIFIER</ons-button>
+
+                     </div>
+                    </li>
+                  </ul>
+      </div>
+
+<input type="hidden" id="id_base_client">
+<script>
+
+</script>
+
+
+      <style>
+      
+      #form_cont1{
+        width: 100%;
+        height: 150px;
+        background-color: #01353F;
+      }
+     
+             label{
+               color: #404AAB;
+             }
+           
+      </style>
+
+    </ons-page>
+  </template>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="jquery-3.5.1.js"></script>
+  <script type="" src="bootstrap.min.js"></script>
+
+
+</body>
+
+
+
+
+</html>

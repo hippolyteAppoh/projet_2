@@ -1,0 +1,84 @@
+#barre{
+	background-color: #3d5afe;
+}
+#toolbar1{
+	background-color: #01353F;
+}
+
+#icone,#titre_b{
+	color: white;
+	
+}
+#titre_b{
+	margin-left: 20%;
+	
+}
+#bouton_plus{
+	background-color:  #3d5afe;
+}
+
+#barre1{
+	background-color:  #01579b;
+}
+#bouton_plus1{
+	background-color: #01579b;
+}
+#barre2{
+	background-color: #006064;
+}
+#forme1 {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: ;
+}
+
+#titre{
+	font-size: 20px;
+}
+#numero_de,#montant_de,#date_de{
+	width: 280px;
+	
+}
+#numero_re,#montant_re,#date_re{
+	width: 280px;
+	
+}
+#bouton_de{
+	width: 280px;
+	background-color: #ff1744;
+	color: white;
+}
+
+#bouton_re{
+	width: 280px;
+	background-color: #01579b;
+	color: white;
+}
+
+#editer{
+	background-color: blue;
+	color:white;
+}
+#supprimer{
+	background-color: red;
+	color:white;
+	margin-left: 50%;
+}
+
+
+
+
+/*NOYVELLE DONNEE*/
+
+
+#input1,#input2,#save{
+	width: 90%;
+}
+#input3,#input4{
+	width: 90%;
+}
+
+#save{
+	background-color: #3d5afe;
+}
